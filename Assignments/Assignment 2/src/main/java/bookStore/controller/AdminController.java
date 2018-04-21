@@ -1,6 +1,7 @@
 package bookStore.controller;
 
 import bookStore.dto.BookDto;
+import bookStore.dto.UserDto;
 import bookStore.service.AuthenticationService;
 import bookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,25 +15,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping(value = "/bookAdmin")
-public class BookController {
-
-    private BookService bookService;
-
-    @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
+@RequestMapping(value = "/adminPage")
+public class AdminController {
 
     @GetMapping()
-    public String getPage(Model model) {
-        model.addAttribute("bookDto", new BookDto());
+    public String adminPage(Model model) {
+        return "adminPage";
+    }
+
+    @PostMapping(params = "adminBook")
+    public String bookPage(@ModelAttribute @Valid BookDto bookDto) {
         return "bookAdmin";
     }
 
-    @PostMapping(params = "createBook")
-    public String showPage(@ModelAttribute @Valid BookDto bookDto) {
-        bookService.create(bookDto);
-        return "bookAdmin";
+    @PostMapping(params = "adminUser")
+    public String userPage(@ModelAttribute @Valid UserDto userDto) {
+        return "userAdmin";
     }
+
+//    @PostMapping(params = "adminReport")
+//    public String reportPage(Model model) {
+//        return "reportAdmin";
+//    }
 }

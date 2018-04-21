@@ -1,5 +1,6 @@
 package bookStore.service;
 
+import bookStore.dto.BookDto;
 import bookStore.model.Book;
 import bookStore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,14 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book create(Book book) {
-        return bookRepository.save(book);
+    public Book findByNameAndAuthorAndGenre(String name, String author, String genre) {
+        return bookRepository.findByNameAndAuthorAndGenre(name, author, genre);
+    }
+
+    @Override
+    public boolean create(BookDto bookDto) {
+        Book book = new Book(bookDto.getName(), bookDto.getAuthor(), bookDto.getGenre(), bookDto.getPrice(), bookDto.getQuantity());
+        bookRepository.save(book);
+        return true;
     }
 }

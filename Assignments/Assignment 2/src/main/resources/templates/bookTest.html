@@ -1,10 +1,22 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Dan Experiments</title>
+    <title>Books</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-Mergeeee!
+<h2>Books Section</h2>
+
+<form action="#" th:action="@{/bookTest}" th:object="${bookDto}" method="post">
+    <p>Title: <input type="text" th:field="*{name}" /></p>
+    <!--<p><input type="submit" name="search" value="Search title" /></p>-->
+
+    <p>Author: <input type="text" th:field="*{author}" /></p>
+    <!--<p><input type="submit" name="search" value="Search author" /></p>-->
+
+    <p>Genre: <input type="text" th:field="*{genre}" /></p>
+    <p><input type="submit" name="search" value="Search" /></p>
+
+</form>
 </body>
 </html>

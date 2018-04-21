@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Books Administration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h2>Books Administration</h2>
+
+<form action="#" th:action="@{/userAdmin}" th:object="${userDto}" method="post">
+    <p>Username: <input type="text" th:field="*{username}" /></p>
+    <p>Password: <input type="text" th:field="*{password}" /></p>
+    <p><input type="submit" name="createUser" value="Create User" /></p>
+    <p><input type="submit" name="updateUser" value="Update User" /></p>
+    <p><input type="submit" name="deleteUser" value="Delete User" /></p>
+</form>
+</body>
+</html>
