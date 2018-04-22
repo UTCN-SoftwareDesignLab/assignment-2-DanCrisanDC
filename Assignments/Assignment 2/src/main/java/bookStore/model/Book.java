@@ -9,6 +9,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column (unique = true)
     private String name;
     private String author;
     private String genre;

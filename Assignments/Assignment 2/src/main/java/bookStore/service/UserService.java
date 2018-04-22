@@ -7,9 +7,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface AuthenticationService {
+public interface UserService {
+
+    boolean delete(int id);
+
+    boolean update(UserDto userDto);
 
     boolean create(UserDto userDto);
 
     List<User> getAll();
+
+    User findByUsernameAndPassword(String username, String password);
 }

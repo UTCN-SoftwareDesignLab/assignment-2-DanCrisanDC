@@ -10,13 +10,38 @@ import java.security.MessageDigest;
 import java.util.List;
 
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService{
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        userRepository.deleteById(id);
+        if(userRepository.findById(id) == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean update(UserDto userDto) {
+
+        User user = userRepository.findById(userDto.getId()).get();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(encodePassword(userDto.getPassword()));
+        userRepository.save(user);
+
+        if(user != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -24,12 +49,21 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
         User user = new User(userDto.getUsername(), encodePassword(userDto.getPassword()));
         userRepository.save(user);
-        return true;
+        if (user != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User findByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, encodePassword(password));
     }
 
     private String encodePassword(String password) {

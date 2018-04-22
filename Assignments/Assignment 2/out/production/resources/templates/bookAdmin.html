@@ -12,9 +12,15 @@
     <p>Book author: <input type="text" th:field="*{author}" /></p>
     <p>Book genre: <input type="text" th:field="*{genre}" /></p>
     <p>Book price: <input type="number" th:field="*{price}" /></p>
+    <p>Book quantity: <input type="number" th:field="*{quantity}" /></p>
+    <p>Book id: <input type="number" th:field="*{id}" /></p>
     <p><input type="submit" name="createBook" value="Create Book" /></p>
     <p><input type="submit" name="updateBook" value="Update Book" /></p>
     <p><input type="submit" name="deleteBook" value="Delete Book" /></p>
+    <p><input type="submit" name="bookReport" value="Generate Report" /></p>
 </form>
+
+<p th:text = "${message}" ></p>
+
 </body>
 </html>

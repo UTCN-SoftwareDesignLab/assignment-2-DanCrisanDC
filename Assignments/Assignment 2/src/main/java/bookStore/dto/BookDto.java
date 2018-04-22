@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 
 public class BookDto {
 
+    public int id;
     @Size(min = 1)
     public String name;
     public String author;
@@ -14,6 +15,14 @@ public class BookDto {
     public double price;
     @Min(0)
     public int quantity;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -52,6 +61,19 @@ public class BookDto {
     }
 
     public void setQuantity(int quantity) {
+
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "BookDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", genre='" + genre + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }

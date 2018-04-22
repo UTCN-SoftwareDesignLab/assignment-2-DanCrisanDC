@@ -12,5 +12,13 @@ public interface BookService {
 
     Book findByNameAndAuthorAndGenre(String name, String author, String genre);
 
+    boolean delete(int id);
+
+    boolean update(BookDto bookDto);
+
     boolean create(BookDto bookDto);
+
+    Book sell(String name, String author, String genre, int quantity);
+
+    List<Book> findOutOfStock();
 }
