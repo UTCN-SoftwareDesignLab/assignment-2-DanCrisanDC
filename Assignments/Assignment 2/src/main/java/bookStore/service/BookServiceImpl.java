@@ -26,17 +26,17 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book findByNameAndAuthorAndGenre(String name, String author, String genre) {
-        return bookRepository.findByNameAndAuthorAndGenre(name, author, genre);
+    public List<Book> findByNameOrAuthorOrGenre(String name, String author, String genre) {
+        return bookRepository.findByNameOrAuthorOrGenre(name, author, genre);
     }
 
     @Override
     public boolean delete(int id) {
         bookRepository.deleteById(id);
         if(bookRepository.findById(id) == null) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -71,18 +71,18 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book sell(String name, String author, String genre, int quantity) {
-        Book book = bookRepository.findByNameAndAuthorAndGenre(name, author, genre);
-        if(book.getQuantity() - quantity > 0) {
-            book.setQuantity(book.getQuantity() - quantity);
+        List<Book> books = bookRepository.findByNameOrAuthorOrGenre(name, author, genre);
+        if(books.size() < 2) {
+            Book book = books.get(0);
+            if (book.getQuantity() - quantity > 0) {
+                book.setQuantity(book.getQuantity() - quantity);
+            } else {
+                return null;
+            }
+            bookRepository.save(book);
+            return book;
         } else {
-            book.setQuantity(0);
+            return null;
         }
-        bookRepository.save(book);
-        return book;
-    }
-
-    @Override
-    public List<Book> findOutOfStock() {
-        return bookRepository.findAllByQuantity(0);
     }
 }

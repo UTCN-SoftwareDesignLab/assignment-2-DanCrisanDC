@@ -11,9 +11,9 @@ public interface UserService {
 
     boolean delete(int id);
 
-    boolean update(UserDto userDto);
+    void update(UserDto userDto);
 
-    boolean create(UserDto userDto);
+    void create(UserDto userDto);
 
     List<User> getAll();
 

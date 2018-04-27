@@ -16,9 +16,7 @@ import javax.validation.Valid;
 public class AdminController {
 
     @GetMapping()
-    public String adminPage(Model model) {
-        model.addAttribute("userDto", new UserDto());
-        model.addAttribute("bookDto", new BookDto());
+    public String adminPage() {
         return "adminPage";
     }
 

@@ -12,12 +12,15 @@ public class User {
     @Column(unique = true)
     private String username;
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private User() {}
 
-    public User(String username, String password) {
+    public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public int getId() {
@@ -46,5 +49,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

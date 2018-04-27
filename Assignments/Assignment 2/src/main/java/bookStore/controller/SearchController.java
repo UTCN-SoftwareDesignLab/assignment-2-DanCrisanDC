@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping (value = "/bookTest")
@@ -28,15 +29,25 @@ public class SearchController {
 
     @PostMapping(params = "search")
     public String searchBook(@RequestParam("name") String name, @RequestParam("author") String author, @RequestParam("genre") String genre, Model model) {
-        Book book = bookService.findByNameAndAuthorAndGenre(name, author, genre);
-        model.addAttribute(book);
+
+        List<Book> books = bookService.findByNameOrAuthorOrGenre(name, author, genre);
+        model.addAttribute("book", books);
         return "resultsPage";
     }
 
     @PostMapping(params = "sell")
     public String sellBooks(@RequestParam("name") String name, @RequestParam("author") String author, @RequestParam("genre") String genre, @RequestParam("quantity") int quantity, Model model) {
         Book book = bookService.sell(name, author, genre, quantity);
-        model.addAttribute(book);
-        return "resultsPage";
+
+        if(book == null) {
+            List<Book> books = bookService.findByNameOrAuthorOrGenre(name, author, genre);
+            model.addAttribute("book", books);
+            model.addAttribute("message", "Could not complete selling.");
+            return "resultsPage";
+        } else {
+            model.addAttribute(book);
+            model.addAttribute("message", "Selling performed successfully.");
+            return "resultsPage";
+        }
     }
 }

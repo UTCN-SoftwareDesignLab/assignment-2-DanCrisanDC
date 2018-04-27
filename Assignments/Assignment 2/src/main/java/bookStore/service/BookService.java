@@ -10,7 +10,7 @@ import java.util.List;
 public interface BookService {
     List<Book> getAll();
 
-    Book findByNameAndAuthorAndGenre(String name, String author, String genre);
+    List<Book> findByNameOrAuthorOrGenre(String name, String author, String genre);
 
     boolean delete(int id);
 
@@ -19,6 +19,4 @@ public interface BookService {
     boolean create(BookDto bookDto);
 
     Book sell(String name, String author, String genre, int quantity);
-
-    List<Book> findOutOfStock();
 }

@@ -1,9 +1,11 @@
 package bookStore.service;
 
 import bookStore.dto.UserDto;
+import bookStore.model.Role;
 import bookStore.model.User;
 import bookStore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
@@ -13,6 +15,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -30,30 +33,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(UserDto userDto) {
+    public void update(UserDto userDto) {
 
         User user = userRepository.findById(userDto.getId()).get();
         user.setUsername(userDto.getUsername());
-        user.setPassword(encodePassword(userDto.getPassword()));
+        user.setPassword(encoder.encode(userDto.getPassword()));
         userRepository.save(user);
-
-        if(user != null) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override
-    public boolean create(UserDto userDto) {
+    public void create(UserDto userDto) {
 
-        User user = new User(userDto.getUsername(), encodePassword(userDto.getPassword()));
+        User user = new User(userDto.getUsername(), encoder.encode(userDto.getPassword()), Role.USER);
         userRepository.save(user);
-        if (user != null) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override
@@ -63,24 +55,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsernameAndPassword(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, encodePassword(password));
-    }
-
-    private String encodePassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes("UTF-8"));
-            StringBuilder hexString = new StringBuilder();
-
-            for (int i = 0; i < hash.length; i++) {
-                String hex = Integer.toHexString(0xff & hash[i]);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        return userRepository.findByUsernameAndPassword(username, encoder.encode(password));
     }
 }

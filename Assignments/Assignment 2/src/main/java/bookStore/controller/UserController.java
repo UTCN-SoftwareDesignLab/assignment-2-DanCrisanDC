@@ -5,6 +5,7 @@ import bookStore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,24 +28,22 @@ public class UserController {
     }
 
     @PostMapping(params = "createUser")
-    public String createUser(@ModelAttribute @Valid UserDto userDto, Model model) {
+    public String createUser(@ModelAttribute @Valid UserDto userDto, BindingResult bindingResult, Model model) {
 
-        if(userService.create(userDto)) {
-            model.addAttribute("message", "Added user successfully.");
-        } else {
-            model.addAttribute("message", "Failed to add user.");
+        if (bindingResult.hasErrors()) {
+            return "userAdmin";
         }
+        userService.create(userDto);
         return "userAdmin";
     }
 
     @PostMapping(params = "updateUser")
-    public String updateUser(@ModelAttribute @Valid UserDto userDto, Model model) {
+    public String updateUser(@ModelAttribute @Valid UserDto userDto, BindingResult bindingResult, Model model) {
 
-        if(userService.update(userDto)) {
-            model.addAttribute("message", "Updated user successfully.");
-        } else {
-            model.addAttribute("message", "Failed to update user.");
+        if(bindingResult.hasErrors()) {
+            return "userAdmin";
         }
+        userService.update(userDto);
         return "userAdmin";
     }
 

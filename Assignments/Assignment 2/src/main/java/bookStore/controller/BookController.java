@@ -1,6 +1,10 @@
 package bookStore.controller;
 
 import bookStore.dto.BookDto;
+import bookStore.model.Book;
+import bookStore.service.report.Delegator;
+import bookStore.service.report.ReportService;
+import bookStore.service.report.ReportWriter;
 import bookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,16 +12,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/bookAdmin")
 public class BookController {
 
     private BookService bookService;
+    private ReportService reportService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, ReportService reportService) {
         this.bookService = bookService;
+        this.reportService = reportService;
     }
 
     @GetMapping()
@@ -59,9 +66,11 @@ public class BookController {
         return "bookAdmin";
     }
 
-//    @PostMapping(params = "bookReport")
-//    public String generateReport() {
+    @PostMapping(params = "bookReport")
+    public String generateReport(@ModelAttribute BookDto bookDto) {
 
-//        return "bookAdmin";
-//    }
+        reportService.generateReport("pdf");
+        reportService.generateReport("csv");
+        return "bookAdmin";
+    }
 }

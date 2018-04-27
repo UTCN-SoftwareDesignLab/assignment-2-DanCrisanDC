@@ -35,6 +35,13 @@ dependencies {
     // Use MySQL Connector-J
     compile 'mysql:mysql-connector-java'
 
+    // pdf box
+    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.1'
+
+    //security
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-security")
+
     testCompile("junit:junit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

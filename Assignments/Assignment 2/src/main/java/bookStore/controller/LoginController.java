@@ -2,11 +2,13 @@ package bookStore.controller;
 
 import bookStore.dto.BookDto;
 import bookStore.dto.UserDto;
+import bookStore.model.Role;
 import bookStore.model.User;
 import bookStore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,13 +36,11 @@ public class LoginController {
     }
 
     @PostMapping(params = "register") // la ce adresa
-    public String registerUser(@ModelAttribute @Valid UserDto userDto, Model model) {
-
-        if(userService.create(userDto)) {
-            model.addAttribute("message", "User created succesfully");
-        } else {
-            model.addAttribute("message", "Username should be at least 6 characters long. Password should be at least 8 characters long, with 1 small letter, 1 capital letter and 1 digit.");
+    public String registerUser(@ModelAttribute @Valid UserDto userDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()){
+            return "authentication";
         }
+        userService.create(userDto);
         return "authentication"; // ce pagina returnez
     }
 
@@ -49,7 +49,7 @@ public class LoginController {
 
         User user = userService.findByUsernameAndPassword(userDto.getUsername(),userDto.getPassword());
         if(user != null) {
-            if (userDto.getUsername().equals("dan.crisan") && userDto.getPassword().equals("Parola99")) {
+            if (user.getRole().equals(Role.ADMIN)) {
                 return "adminPage";
             } else {
                 return "bookTest";
