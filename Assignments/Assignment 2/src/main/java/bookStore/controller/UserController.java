@@ -19,6 +19,10 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+        UserDto u = new UserDto();
+        u.setUsername("anca123");
+        u.setPassword("Parola123");
+        userService.create(u);
     }
 
     @GetMapping()

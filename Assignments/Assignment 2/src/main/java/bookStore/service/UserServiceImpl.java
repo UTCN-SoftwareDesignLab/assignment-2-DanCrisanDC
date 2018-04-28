@@ -37,14 +37,14 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(userDto.getId()).get();
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(encoder.encode(userDto.getPassword()));
         userRepository.save(user);
     }
 
     @Override
     public void create(UserDto userDto) {
 
-        User user = new User(userDto.getUsername(), userDto.getPassword(), Role.USER);
+        User user = new User(userDto.getUsername(), encoder.encode(userDto.getPassword()), Role.USER);
         userRepository.save(user);
     }
 
@@ -55,6 +55,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsernameAndPassword(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password);
+        return userRepository.findByUsernameAndPassword(username, encoder.encode(password));
     }
 }

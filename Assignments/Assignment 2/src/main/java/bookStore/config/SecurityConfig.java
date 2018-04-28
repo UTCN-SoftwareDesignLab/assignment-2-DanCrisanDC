@@ -25,11 +25,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select username,password, true from user where username = ?")
-                .authoritiesByUsernameQuery("select user.username, role.name "+
+                .authoritiesByUsernameQuery("select username, role "+
                         "from user "+
-                        "where user.username=? ")
-                .rolePrefix("ROLE_");
-                //.passwordEncoder(new BCryptPasswordEncoder());
+                        "where username=? ")
+                .rolePrefix("ROLE_")
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
