@@ -7,6 +7,8 @@
 <body>
 <h2>Books Section</h2>
 
+<div th:if="${param.logout}"> You have been logged out. </div>
+
 <form action="#" th:action="@{/bookTest}" th:object="${bookDto}" method="post">
     <p>Title: <input type="text" th:field="*{name}" /></p>
     <!--<p><input type="submit" name="search" value="Search title" /></p>-->
@@ -22,7 +24,7 @@
 
 </form>
 
-<p th:text = "${message}" ></p>
+<!--<p th:text = "${message}" ></p>-->
 
 </body>
 </html>

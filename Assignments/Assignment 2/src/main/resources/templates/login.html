@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h2>Authentication</h2>
+
+<div th:if="${param.error}"> Invalid username and password. </div>
+<!--<div th:if="${param.logout}"> You have been logged out. </div>-->
+
+<!--<form action="#" th:action="@{/authentication}" th:object="${userDto}" method="post">-->
+<form action="#" th:action="@{/login}" method="post">
+    <!--<p>Username: <input type="text" th:field="*{username}" /></p>-->
+    <!--<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>-->
+    <!--<p>Password: <input type="text" th:field="*{password}" /></p>-->
+    <!--<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>-->
+    <!--<p><input type="submit" name="login" value="Login" /></p>-->
+
+    <div><label> Username : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Login"/></div>
+</form>
+
+<!--<p th:text = "${message}" ></p>-->
+
+</body>
+</html>
