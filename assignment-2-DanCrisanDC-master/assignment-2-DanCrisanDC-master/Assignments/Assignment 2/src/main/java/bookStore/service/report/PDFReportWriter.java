@@ -54,7 +54,7 @@ public class PDFReportWriter implements ReportWriter {
             contentStream.endText();
             contentStream.close();
 
-            document.save("D:\\Documents\\facultate\\anul 3\\SEM 2\\SD\\Assignments\\Assignment 2\\OutOfStockBooks.pdf");
+            document.save("D:\\Documents\\facultate\\anul 3\\SEM 2\\SD\\assignment-2-DanCrisanDC-master\\assignment-2-DanCrisanDC-master\\Assignments\\Assignment 2\\OutOfStockBooks.pdf");
             document.close();
         } catch (IOException e) {
             e.printStackTrace();

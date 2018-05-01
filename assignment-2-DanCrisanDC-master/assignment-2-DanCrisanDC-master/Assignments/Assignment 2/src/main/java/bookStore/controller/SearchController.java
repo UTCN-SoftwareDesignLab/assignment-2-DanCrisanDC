@@ -30,20 +30,18 @@ public class SearchController {
     }
 
     @PostMapping(params = "search")
-    public String searchBooks(@RequestParam("name") String name, @RequestParam("author") String author, @RequestParam("genre") String genre, Model model) {
+    public String searchBooks(@RequestParam("name") String name, Model model) {
 
-        List<Book> books = bookService.findByNameOrAuthorOrGenre(name, author, genre);
+        List<Book> books = bookService.searchByField(name);
         model.addAttribute("book", books);
         return "resultsPage";
     }
 
     @PostMapping(params = "sell")
-    public String sellBooks(@RequestParam("name") String name, @RequestParam("author") String author, @RequestParam("genre") String genre, @RequestParam("quantity") int quantity, Model model) {
-        Book book = bookService.sell(name, author, genre, quantity);
+    public String sellBooks(@RequestParam("name") String name, @RequestParam("quantity") int quantity, Model model) {
+        Book book = bookService.sell(name, quantity);
 
         if(book == null) {
-            List<Book> books = bookService.findByNameOrAuthorOrGenre(name, author, genre);
-            model.addAttribute("book", books);
             model.addAttribute("messageResult", "Could not complete selling.");
             return "resultsPage";
         } else {

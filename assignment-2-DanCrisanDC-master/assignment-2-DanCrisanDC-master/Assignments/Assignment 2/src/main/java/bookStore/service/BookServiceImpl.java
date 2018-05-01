@@ -75,10 +75,10 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book sell(String name, String author, String genre, int quantity) {
-        List<Book> books = bookRepository.findByNameOrAuthorOrGenre(name, author, genre);
-        if(books.size() < 2 && quantity >= 0) {
-            Book book = books.get(0);
+    public Book sell(String name, int quantity) {
+        Book book = bookRepository.findByName(name);
+
+        if(quantity >= 0) {
             if (book.getQuantity() - quantity > 0) {
                 book.setQuantity(book.getQuantity() - quantity);
             } else {
@@ -94,5 +94,10 @@ public class BookServiceImpl implements BookService{
     @Override
     public void deleteAll() {
         bookRepository.deleteAll();
+    }
+
+    @Override
+    public List<Book> searchByField(String field) {
+        return bookRepository.findByField(field);
     }
 }

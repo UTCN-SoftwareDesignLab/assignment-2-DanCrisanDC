@@ -21,7 +21,9 @@ public interface BookService {
 
     boolean create(BookDto bookDto);
 
-    Book sell(String name, String author, String genre, int quantity);
+    Book sell(String name, int quantity);
 
     void deleteAll();
+
+    List<Book> searchByField(String field);
 }

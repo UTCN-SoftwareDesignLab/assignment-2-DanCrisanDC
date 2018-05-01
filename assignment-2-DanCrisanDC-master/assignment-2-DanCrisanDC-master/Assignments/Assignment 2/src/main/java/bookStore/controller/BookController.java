@@ -2,22 +2,26 @@ package bookStore.controller;
 
 import bookStore.dto.BookDto;
 import bookStore.model.Book;
-import bookStore.service.report.Delegator;
 import bookStore.service.report.ReportService;
-import bookStore.service.report.ReportWriter;
 import bookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
+import java.io.*;
 
 @Controller
 @RequestMapping(value = "/bookAdmin")
 public class BookController {
+
+    private static final String APPLICATION_PDF = "application/pdf";
+    private static final String APPLICATION_CSV = "application/txt";
 
     private BookService bookService;
     private ReportService reportService;
@@ -53,7 +57,7 @@ public class BookController {
             return "bookAdmin";
         }
         bookService.update(bookDto);
-        model.addAttribute("message", "Added book successfully.");
+        model.addAttribute("message", "Updated book successfully.");
 
         return "bookAdmin";
     }
@@ -84,17 +88,40 @@ public class BookController {
         return "bookAdmin";
     }
 
-    @PostMapping(params = "pdfReport")
-    public String generatePDFReport(@ModelAttribute BookDto bookDto) {
-
-        reportService.generateReport("pdf");
-        return "bookAdmin";
-    }
-
-    @PostMapping(params = "csvReport")
-    public String generateCSVReport(@ModelAttribute BookDto bookDto) {
+    @RequestMapping(params = "csvReport", method = RequestMethod.POST)
+    public @ResponseBody void downloadCSV(HttpServletResponse response) throws IOException {
 
         reportService.generateReport("csv");
-        return "bookAdmin";
+        String filename = "D:\\Documents\\facultate\\anul 3\\SEM 2\\SD\\assignment-2-DanCrisanDC-master\\assignment-2-DanCrisanDC-master\\Assignments\\Assignment 2\\OutOfStockBooks.csv";
+
+        File file = getFile(filename);
+        InputStream in = new FileInputStream(file);
+        response.setContentType(APPLICATION_CSV);
+        response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+        response.setHeader("Content-Length", String.valueOf(file.length()));
+        FileCopyUtils.copy(in, response.getOutputStream());
     }
+
+    @RequestMapping(params = "pdfReport", method = RequestMethod.POST)
+    public @ResponseBody void downloadPDF(HttpServletResponse response) throws IOException {
+
+        reportService.generateReport("pdf");
+        String filename = "D:\\Documents\\facultate\\anul 3\\SEM 2\\SD\\assignment-2-DanCrisanDC-master\\assignment-2-DanCrisanDC-master\\Assignments\\Assignment 2\\OutOfStockBooks.pdf";
+
+        File file = getFile(filename);
+        InputStream in = new FileInputStream(file);
+        response.setContentType(APPLICATION_PDF);
+        response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+        response.setHeader("Content-Length", String.valueOf(file.length()));
+        FileCopyUtils.copy(in, response.getOutputStream());
+    }
+
+    private File getFile(String filename) throws FileNotFoundException {
+        File file = new File(filename);
+        if (!file.exists()){
+            throw new FileNotFoundException("file was not found.");
+        }
+        return file;
+    }
+
 }
